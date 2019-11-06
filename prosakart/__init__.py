@@ -8,8 +8,8 @@ Tests Georgian vocabulary.
 from __future__ import annotations
 
 # Import local files.
-from sql_handle import SQLHandler
-from interfaces import MainWidget
+from . sql_handle import SQLHandler
+from . interfaces import MainWidget
 
 
 # Runs the application.
