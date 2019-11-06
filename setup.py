@@ -4,8 +4,8 @@
 from setuptools import setup
 
 
-package_name = 'outbreak'
-filename = 'outbreak/__init__.py'
+package_name = 'prosakart'
+filename = 'prosakart/__init__.py'
 
 
 def get_version():
