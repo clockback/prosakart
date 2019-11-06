@@ -43,7 +43,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'outbreak = bin.outbreak:main'
+            'prosakart = bin.prosakart:main'
         ]
     },
     license='License :: OSI Approved :: MIT License',
