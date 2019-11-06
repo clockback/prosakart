@@ -29,9 +29,9 @@ class SQLHandler:
         )
         self.conn = sql.connect(db_file)
         self.cur = self.conn.cursor()
-        self.create_db()
+        self.create_db(db_file)
 
-    def create_db(self) -> None:
+    def create_db(self, file) -> None:
         """
         Structures the database.
         :return: None
@@ -130,7 +130,7 @@ class SQLHandler:
         # Refreshes the connection. This prevents certain errors.
         self.conn.commit()
         self.conn.close()
-        self.conn = sql.connect("vocab.db")
+        self.conn = sql.connect(file)
         self.cur = self.conn.cursor()
         self.conn.execute("PRAGMA foreign_keys = ON;")
 
