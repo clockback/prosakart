@@ -1,6 +1,8 @@
 # collections is needed for remembering recent words.
 from collections import deque
+
 from difflib import SequenceMatcher
+from math import ceil
 
 # tkinter is needed for the GUI interface.
 import tkinter as tk
@@ -10,8 +12,7 @@ from tkinter import ttk
 from typing import Any, Deque, Tuple, Type, Union
 
 # Import local files.
-from sql_handle import SQLHandler
-from math import ceil
+from . sql_handle import SQLHandler
 
 
 def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
@@ -106,7 +107,7 @@ class BaseInterface:
         """
         self.destroyed = True
 
-    def go_to(self, new_interface: Type[BaseInterface], *args: Any) -> None:
+    def go_to(self, new_interface: Type['BaseInterface'], *args: Any) -> None:
         """
         Switches to a different interface.
         :param new_interface: BaseInterface
