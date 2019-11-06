@@ -1,6 +1,9 @@
 # itertools is needed for the repeating function
 from itertools import chain, repeat
 
+# Path is needed to find the home folder
+from pathlib import Path, PurePath
+
 # sqlite3 is needed to interact with the database.
 import sqlite3 as sql
 
@@ -17,7 +20,14 @@ class SQLHandler:
         """
         Connects to the SQLite database.
         """
-        self.conn = sql.connect("vocab.db")
+        home = Path.home()
+        path = Path(home, ".prosakart")
+        if len(list(home.glob(".prosakart"))) == 0:
+            path.mkdir(parents=True, exist_ok=True)
+        db_file = Path(
+            path, "vocab.db"
+        )
+        self.conn = sql.connect(db_file)
         self.cur = self.conn.cursor()
         self.create_db()
 
