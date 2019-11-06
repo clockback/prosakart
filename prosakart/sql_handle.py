@@ -24,9 +24,7 @@ class SQLHandler:
         path = Path(home, ".prosakart")
         if len(list(home.glob(".prosakart"))) == 0:
             path.mkdir(parents=True, exist_ok=True)
-        db_file = Path(
-            path, "vocab.db"
-        )
+        db_file = str(Path(path, "vocab.db"))
         self.conn = sql.connect(db_file)
         self.cur = self.conn.cursor()
         self.create_db(db_file)
