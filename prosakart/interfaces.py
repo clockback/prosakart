@@ -1,6 +1,3 @@
-# __future__ is needed for specific type hinting (must precede others).
-from __future__ import annotations
-
 # collections is needed for remembering recent words.
 from collections import deque
 from difflib import SequenceMatcher
