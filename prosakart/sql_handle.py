@@ -2,7 +2,7 @@
 from itertools import chain, repeat
 
 # Path is needed to find the home folder
-from pathlib import Path, PurePath
+from pathlib import Path
 
 # sqlite3 is needed to interact with the database.
 import sqlite3 as sql
@@ -990,14 +990,15 @@ class SQLHandler:
 
     def update_entry(
             self, entry: int, correct: bool
-    ) -> None:
+    ) -> Tuple[int, int, int]:
         """
         Finds the next entry for the user to do.
         :param entry: int
             The id of the entry.
         :param correct: bool
             Whether or not the entry was answered correctly.
-        :return: None
+        :return: Tuple[int, int, int]
+            The points, needed and so_far values.
         """
         # Finds the entries previous details.
         self.cur.execute(
@@ -1040,6 +1041,8 @@ class SQLHandler:
             """, (points, needed, so_far, completed, entry)
         )
 
+        return points, needed, so_far
+
     def refresh_entries(self) -> None:
         """
         Ensures that all entries gain points after a long enough period
@@ -1059,5 +1062,14 @@ class SQLHandler:
                     and points = 2)
                 OR (datetime('now') > datetime(completed, '+3 month')
                     and points = 3)
+            """
+        )
+
+        #TODO: remove this
+        self.conn.execute(
+            """
+            UPDATE entries SET points = 0, completed = NULL, so_far = 0,
+                needed = 2
+            WHERE question = "abc";
             """
         )

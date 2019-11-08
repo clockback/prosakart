@@ -2,7 +2,6 @@
 from collections import deque
 
 from difflib import SequenceMatcher
-from math import ceil
 
 # tkinter is needed for the GUI interface.
 import tkinter as tk
@@ -13,6 +12,9 @@ from typing import Any, Deque, Tuple, Type, Union
 
 # Import local files.
 from . sql_handle import SQLHandler
+from . misc import linspace
+
+from time import time
 
 
 def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
@@ -2219,7 +2221,9 @@ class PickSheetInterface(BaseInterface):
         )
         for sheet in self.handler.get_all_sheets(from_l, to_l, sort=True):
             self.listbox.insert(tk.END, sheet)
-        self.listbox.bind("<<ListboxSelect>>", lambda _: self.select_sheet())
+        self.listbox.bind("<<ListboxSelect>>", lambda _: self.select_sheet(
+            from_l, to_l
+        ))
         self.listbox.focus()
         self.listbox.pack()
 
@@ -2243,12 +2247,18 @@ class PickSheetInterface(BaseInterface):
         self.advance_button.config(state=tk.DISABLED)
         self.advance_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
 
-    def select_sheet(self) -> None:
+    def select_sheet(self, from_l: str, to_l: str) -> None:
         """
         Allows the user to advance.
         :return: None
         """
-        self.advance_button.config(state=tk.NORMAL)
+        if self.handler.get_entries_from_sheet(
+            self.listbox.get(self.listbox.curselection()), from_l, to_l
+
+        ):
+            self.advance_button.config(state=tk.NORMAL)
+        else:
+            self.advance_button.config(state=tk.DISABLED)
 
     def destroy(self) -> None:
         """
@@ -2277,6 +2287,9 @@ class TestInterface(BaseInterface):
 
         # Initializes the general aspects of the interface.
         super().__init__(main_widget, handler)
+
+        # Remembers what animation iteration the test widget is on.
+        self.i: int = 0
 
         # Refreshes all the entries
         self.handler.refresh_entries()
@@ -2308,6 +2321,8 @@ class TestInterface(BaseInterface):
         # Places an image at the bottom of the window.
         self.tick_img: tk.PhotoImage = tk.PhotoImage(file="images/tick.png")
         self.cross_img: tk.PhotoImage = tk.PhotoImage(file="images/cross.png")
+        self.star_img: tk.PhotoImage = tk.PhotoImage(file="images/star.png")
+        self.blank_img: tk.PhotoImage = tk.PhotoImage(file="images/blank.png")
 
         self.canvas: tk.Canvas = tk.Canvas(
             self.widget.top, width=self.tick_img.width(),
@@ -2357,6 +2372,12 @@ class TestInterface(BaseInterface):
         ))
         self.e1.pack()
 
+        # Creates a small cluster of stars at the bottom-left of the
+        # screen.
+        self.stars: tk.Canvas = tk.Canvas(self.panel, width=180, height=40)
+        self.stars.place(anchor=tk.SW, relx=0, rely=1)
+        self.draw_stars()
+
     def resize_window(self, _) -> None:
         """
         Adapts the progress bar appropriately.
@@ -2370,47 +2391,183 @@ class TestInterface(BaseInterface):
         self.progress_bar.config(height=screen_height + 1)
         self.refresh_bar()
 
-    def refresh_bar(self) -> None:
+    def animate_bar(self, sheet_id: int, so_far: int) -> None:
         """
-        Updates the bar.
+        Animates the progress bar.
+        :return: None
+        """
+        self.i += 1
+        if self.i < 500:
+            self.e1.after(1, lambda: self.animate_bar(sheet_id, so_far))
+            self.refresh_bar(so_far)
+        else:
+            self.e1.after(200, lambda: self.new_entry(sheet_id))
+
+    def refresh_bar(self, so_far: Union[int, None] = None) -> None:
+        """
+        Updates the progress bar.
         :return: None
         """
         screen_height = self.widget.top.winfo_height()
         self.progress_bar.delete(tk.ALL)
 
+        lines = linspace(1, screen_height + 2, self.needed + 1, rounded=True)
+
         if self.so_far == 1:
-            self.progress_bar.create_rectangle(
-                0, screen_height // 2 + 2, 20, screen_height + 1, fill='green',
-                outline=""
-            )
+            if so_far is None:
+                self.progress_bar.create_rectangle(
+                    0, lines[1] + 2, 20, lines[-1] - 1,
+                    fill='green', outline=""
+                )
+            elif so_far == 2:
+                self.progress_bar.create_rectangle(
+                    0, (lines[1] + 2) + ((lines[0] + 2) - (lines[1] + 2))
+                    * self.i / 500, 20, lines[-1] - 1, fill='green',
+                    outline=""
+                )
+            elif so_far == -3:
+                green = '#%02x%02x%02x' % (
+                    round(255 * self.i / 500),
+                    round(128 + 127 * self.i / 500),
+                    round(255 * self.i / 500)
+                )
+                red = '#%02x%02x%02x' % (
+                    255,
+                    round(255 - 255 * self.i / 500),
+                    round(255 - 255 * self.i / 500)
+                )
+                self.progress_bar.create_rectangle(
+                    0, lines[1] + 2 + ((lines[2] - 1) - (lines[1] + 2))
+                    * self.i / 500, 20, lines[-1] - 1,
+                    fill=green, outline=""
+                )
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20,
+                    lines[1] + 2 + ((lines[-1] - 1) - (lines[1] + 2))
+                    * self.i / 500 - 3,
+                    fill=red, outline=""
+                )
         elif self.so_far == 2:
-            self.progress_bar.create_rectangle(
-                0, 3, 20, screen_height + 1, fill='green',
-                outline=""
-            )
+            if so_far is None or so_far == 2:
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20, lines[-1] - 1, fill='green',
+                    outline=""
+                )
+            else:
+                green = '#%02x%02x%02x' % (
+                    round(255 * self.i / 500),
+                    round(128 - 128 * self.i / 500),
+                    0
+                )
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20, lines[-1] - 1, fill=green,
+                    outline=""
+                )
         elif self.so_far < 0:
-            self.progress_bar.create_rectangle(
-                0, 3, 20,
-                ceil(2 + (screen_height - 1) * -self.so_far / self.needed),
-                fill='red', outline=""
-            )
-            if self.so_far + self.needed > 0:
+            if so_far is None or so_far == self.so_far - 1:
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20, lines[-self.so_far] - 1,
+                    fill='red', outline=""
+                )
+                if self.so_far + self.needed > 0:
+                    self.progress_bar.create_rectangle(
+                        0, lines[-self.so_far] + 2, 20, screen_height + 1,
+                        fill='orange', outline=""
+                    )
+            elif so_far > self.so_far:
+                top = (
+                          lines[0] + 2 if so_far >= 0
+                          else lines[-1 - self.so_far] - 1
+                )
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20,
+                    lines[-self.so_far] - 1 +
+                    (
+                            top - (lines[-self.so_far] - 1)
+                    ) * self.i / 500,
+                    fill='red', outline=""
+                )
                 self.progress_bar.create_rectangle(
                     0,
-                    ceil(5 + (screen_height - 1) * -self.so_far / self.needed),
-                    20, screen_height + 1, fill='orange', outline=""
+                    lines[-self.so_far] + 2 +
+                    (
+                            (lines[-1 - self.so_far] + 2)
+                            - (lines[-self.so_far] + 2)
+                    ) * self.i / 500, 20, screen_height + 1,
+                    fill='orange', outline=""
+                )
+            elif so_far < self.so_far:
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20,
+                    lines[-self.so_far] - 1 +
+                    (
+                            (lines[-1] - 1)
+                            - (lines[-self.so_far] - 1)
+                    ) * self.i / 500,
+                    fill='red', outline=""
+                )
+                self.progress_bar.create_rectangle(
+                    0,
+                    lines[-self.so_far] + 2 +
+                    (
+                            (lines[-1] - 1)
+                            - (lines[-self.so_far] + 2)
+                    ) * self.i / 500, 20, lines[-1] - 1,
+                    fill='orange', outline=""
                 )
         elif self.needed > 2:
+            if so_far is None or so_far > 2:
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20, lines[-1] - 1, fill='orange',
+                    outline=""
+                )
+            elif so_far == 2:
+                orange = '#%02x%02x%02x' % (
+                    round(255 - 255 * self.i / 500),
+                    round(165 - 37 * self.i / 500),
+                    0
+                )
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20, lines[-1] - 1, fill=orange, outline=""
+                )
+            elif so_far < 0:
+                self.progress_bar.create_rectangle(
+                    0, lines[0] + 2, 20,
+                    lines[0] + 2 +
+                    (
+                            (lines[-1] - 1)
+                            - (lines[0] + 2)
+                    ) * self.i / 500,
+                    fill='red', outline=""
+                )
+                self.progress_bar.create_rectangle(
+                    0,
+                    lines[0] + 2 +
+                    (
+                            (lines[-1] - 1)
+                            - (lines[0] + 2)
+                    ) * self.i / 500, 20, lines[-1] - 1,
+                    fill='orange', outline=""
+                )
+        elif so_far == 1:
             self.progress_bar.create_rectangle(
-                0, 3, 20, screen_height + 1, fill='orange', outline=""
+                0, lines[-1] - 1 + ((lines[1] + 2) - (lines[-1] - 1))
+                * self.i / 500, 20, screen_height + 1, fill='green',
+                outline=""
+            )
+        elif so_far == -3:
+            red = '#%02x%02x%02x' % (
+                255,
+                round(255 - 255 * self.i / 500),
+                round(255 - 255 * self.i / 500)
+            )
+            self.progress_bar.create_rectangle(
+                0, lines[0] + 2, 20, lines[-1] - 1, fill=red, outline=""
             )
 
         # Draws the different lines for the bar.
-        for i in range(1, self.needed):
-            self.progress_bar.create_line(
-                0, ceil(3 + i * (screen_height - 1) / self.needed),
-                20, ceil(3 + i * (screen_height - 1) / self.needed)
-            )
+        for line in lines[1:-1]:
+            self.progress_bar.create_line(0, line, 20, line)
 
     @staticmethod
     def is_close(str_1: str, str_2: str) -> bool:
@@ -2430,6 +2587,10 @@ class TestInterface(BaseInterface):
         Clears the entry made by the user.
         :return: None
         """
+        # Ignores if animating
+        if self.i != 0:
+            return
+
         attempt = self.e1.get().strip()
         match = 0
         for possible_answer in self.handler.get_answers_for_entry(self.entry):
@@ -2452,16 +2613,49 @@ class TestInterface(BaseInterface):
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tick_img)
             self.reattempt = False
 
-        self.handler.update_entry(self.entry, match == 2)
+        so_far = self.handler.update_entry(self.entry, match == 2)[2]
+        self.draw_stars(so_far)
 
-        self.canvas.after(1000, lambda: self.canvas.delete(tk.ALL))
+        self.e1.config(state=tk.DISABLED)
+        self.e1.after(1, lambda: self.animate_bar(sheet_id, so_far))
+
+    def new_entry(self, sheet_id: int) -> None:
+        """
+        Updates a new entry.
+        :param sheet_id: int
+            The id for the vocab sheet.
+        :return: None
+        """
+        self.e1.config(state=tk.NORMAL)
+        self.canvas.delete(tk.ALL)
         self.e1.delete(0, tk.END)
         self.entry, self.question, self.points, self.needed, self.so_far = (
             self.pick_word(sheet_id, self.entry)
         )
+        self.i = 0
         self.refresh_bar()
 
+        # Updates the text displayed for the question.
         self.label['text'] = self.question
+
+        self.draw_stars()
+
+    def draw_stars(self, so_far: Union[int, None] = None) -> None:
+        """
+        Draws the stars in the bottom-right of the screen.
+        :param so_far: Union[int, None]
+            The updated so_far value.
+        :return: None
+        """
+        self.stars.delete(tk.ALL)
+        no_stars = self.points + (
+            1 if (self.so_far if so_far is None else so_far) == 2 else 0
+        )
+        for star in range(self.points + 1):
+            img = self.star_img if star < no_stars else self.blank_img
+            self.stars.create_image(
+                5 + 35 * star, 5, anchor=tk.NW, image=img
+            )
 
     def pick_word(
             self, sheet_id: int, current: Union[int, None] = None
