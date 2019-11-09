@@ -2,6 +2,7 @@
 from collections import deque
 
 from difflib import SequenceMatcher
+from os import path
 
 # tkinter is needed for the GUI interface.
 import tkinter as tk
@@ -153,7 +154,9 @@ class MenuInterface(BaseInterface):
         self.panel.place(anchor=tk.CENTER, relx=0.5, rely=0.5)
 
         # Places an image at the bottom of the window.
-        self.img = tk.PhotoImage(file="images/logo.png")
+        self.img = tk.PhotoImage(file=path.join(
+            path.dirname(path.realpath(__file__)), "images", "logo.png"
+        ))
         self.canvas = tk.Canvas(
             self.widget.top, width=self.img.width(),
             height=self.img.height()
@@ -182,7 +185,9 @@ class MenuInterface(BaseInterface):
 
         # Creates a small cluster of stars at the bottom-left of the
         # screen.
-        self.star_img: tk.PhotoImage = tk.PhotoImage(file="images/star.png")
+        self.star_img: tk.PhotoImage = tk.PhotoImage(file=path.join(
+            path.dirname(path.realpath(__file__)), "images", "star.png"
+        ))
 
         self.star_panel: tk.PanedWindow = tk.PanedWindow(
             self.widget.top, width=200, height=40
@@ -2463,8 +2468,12 @@ class TestInterface(BaseInterface):
         self.panel.bind("<Configure>", self.resize_window)
 
         # Places an image at the bottom of the window.
-        self.star_img: tk.PhotoImage = tk.PhotoImage(file="images/star.png")
-        self.blank_img: tk.PhotoImage = tk.PhotoImage(file="images/blank.png")
+        self.star_img: tk.PhotoImage = tk.PhotoImage(file=path.join(
+            path.dirname(path.realpath(__file__)), "images", "star.png"
+        ))
+        self.blank_img: tk.PhotoImage = tk.PhotoImage(file=path.join(
+            path.dirname(path.realpath(__file__)), "images", "blank.png"
+        ))
 
         self.response: tk.Label = tk.Label(
             self.widget.top, text="", font=("Ubuntu", 20)

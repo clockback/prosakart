@@ -9,6 +9,8 @@ from . sql_handle import SQLHandler
 from . interfaces import MainWidget
 
 
+__version__ = '0.1.0.0'
+
 # Runs the application.
 handler: SQLHandler = SQLHandler()
 widget: MainWidget = MainWidget(handler)
