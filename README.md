@@ -1,4 +1,4 @@
-![](images/logo.png "Logo")
+![](prosakart/images/logo.png "Logo")
 
 # About
 
@@ -38,7 +38,7 @@ $ prosakart
 ```
 This will take you to the menu.
 
-![Figure 1: Main menu](images/documentation/doc_1.png "Main menu")
+![Figure 1: Main menu](prosakart/images/documentation/doc_1.png "Main menu")
 
 ## Creating your vocabulary
 
@@ -48,19 +48,19 @@ ProSakart uses SQLite to manage a local database in your home folder under `.pro
 
 Before you can create your vocabulary, you will need to define some languages. For this example you will be using ProSakart to learn German. (Note that you can translate between languages other than English.) First, click on the "Create" button to access the "Create menu".
 
-![Figure 2: Create menu](images/documentation/doc_2.png "Create menu")
+![Figure 2: Create menu](prosakart/images/documentation/doc_2.png "Create menu")
 
 Here, we can either define languages, sheets, or vocabulary entries. To open the "Languages menu", click on the "Edit languages" button.
 
-![Figure 3: Languages menu](images/documentation/doc_3.png "Languages menu")
+![Figure 3: Languages menu](prosakart/images/documentation/doc_3.png "Languages menu")
 
 At the moment, there are no languages, so you will have to create your own. You can do this by clicking on the "New" button.
 
-![Figure 4: Create language](images/documentation/doc_4.png "Create language")
+![Figure 4: Create language](prosakart/images/documentation/doc_4.png "Create language")
 
 You will be prompted to give the language a name. For now, type "English" then click the "Save" button.
 
-![Figure 5: New Languages menu](images/documentation/doc_5.png "New Languages menu")
+![Figure 5: New Languages menu](prosakart/images/documentation/doc_5.png "New Languages menu")
 
 As you can see, English is now one of your languages. However, this application requires at least two languages to create vocabulary. Repeat the steps above to create another language: "German". Once this is done, click "Back" to return to the "Edit menu".
 
@@ -70,21 +70,21 @@ It is now time to create your own vocabulary entries. An entry consists of a que
 
 Click on the "Edit entries" to choose which languages you wish to create entries for.
 
-![Figure 6: Entries' languages](images/documentation/doc_6.png "Entries' languages")
+![Figure 6: Entries' languages](prosakart/images/documentation/doc_6.png "Entries' languages")
 
 Here, we can see two lists, each containing our two new languages. The first list is captioned "From:" and the second "To:". If we are trying to translate German into English, we must select "German" in the "From:" list and "English" in the "To:" list. You cannot create entries for the same language. Click on "Advance" to access the "Entries menu".
 
-![Figure 7: Entries menu](images/documentation/doc_7.png "Entries menu")
+![Figure 7: Entries menu](prosakart/images/documentation/doc_7.png "Entries menu")
 
 Ignore the search bar at the top. For now, it's useless, but once you start accumulating many entries, you may find it faster to filter them there rather than scrolling. Click on "New" to start creating your first entry.
 
-![Figure 8: Entry details](images/documentation/doc_8.png "Entries details")
+![Figure 8: Entry details](prosakart/images/documentation/doc_8.png "Entries details")
 
 You will be able to fill in two forms. The first is the question, which you should populate with the word "Vater". The second is the top answer. This is the answer which is displayed during a test if the user answers the question incorrectly. Type in "father".
 
 Before we save the entry, we may wish for the user to be able to answer the question with "dad" as well. To do so, click on the "Answers" tab at the top.
 
-![Figure 9: Entry answers](images/documentation/doc_9.png "Entries answers")
+![Figure 9: Entry answers](prosakart/images/documentation/doc_9.png "Entries answers")
 
 Here, we can see "father" in a list. To add another answer to the list, type in "dad" and click on the "Add" button. The word "dad" shall then be added to the bottom of the list.
 
@@ -100,7 +100,7 @@ You will want to add your answer to a sheet, but you haven't created any sheets 
 
 Once this is completed, you should see the following in your entries list.
 
-![Figure 10: New Entries menu](images/documentation/doc_10.png "New Entries menu")
+![Figure 10: New Entries menu](prosakart/images/documentation/doc_10.png "New Entries menu")
 
 Once this is done, click "Back" twice to return to the "Edit menu".
 
@@ -108,23 +108,23 @@ Once this is done, click "Back" twice to return to the "Edit menu".
 
 In order to test your vocabulary, you need to create vocabulary sheets. Click on the "Edit sheets" button.
 
-![Figure 11: Sheets' languages](images/documentation/doc_11.png "Sheets' languages")
+![Figure 11: Sheets' languages](prosakart/images/documentation/doc_11.png "Sheets' languages")
 
 Like when you created the entries, you are prompted to select two languages. As before, select "German" and "English" respectively, then click "Advance" to access the "Sheets menu".
 
-![Figure 12: Sheets menu](images/documentation/doc_12.png "Sheets menu")
+![Figure 12: Sheets menu](prosakart/images/documentation/doc_12.png "Sheets menu")
 
 At the moment, you don't have any sheets. To create a new sheet, click "New".
 
-![Figure 13: Name sheet](images/documentation/doc_13.png "Name sheet")
+![Figure 13: Name sheet](prosakart/images/documentation/doc_13.png "Name sheet")
 
 You are prompted to give your sheet a name. Call your new sheet "Lesson 1 - Basics", but don't save the entry yet. Instead, click on the "Entries" tab at the top of the screen.
 
-![Figure 14: Add entries to sheet](images/documentation/doc_14.png "Add entries to sheet")
+![Figure 14: Add entries to sheet](prosakart/images/documentation/doc_14.png "Add entries to sheet")
 
 You will see a list of the entries that you've made. There is a search bar for when you have a very large number of entries. Select all six of the entries to add them to your sheet, such that they are all highlighted, then click on the "Save" button.
 
-![Figure 15: New Sheets menu](images/documentation/doc_15.png "New Sheets menu")
+![Figure 15: New Sheets menu](prosakart/images/documentation/doc_15.png "New Sheets menu")
 
 Looking at your sheets menu, you know have a single sheet. Now click "Back" three times to return to the menu.
 
@@ -134,15 +134,15 @@ Congratulations! You have created everything you need to start memorizing your v
 
 Now that everything is in place, it's time to click on the "Test" button, prompting you to select the languages you wish to test.
 
-![Figure 16: Test languages](images/documentation/doc_16.png "Test languages")
+![Figure 16: Test languages](prosakart/images/documentation/doc_16.png "Test languages")
 
 As usual, select "German" and "English" respectively, then click on "Advance".
 
-![Figure 17: Select sheet](images/documentation/doc_17.png "Select sheet")
+![Figure 17: Select sheet](prosakart/images/documentation/doc_17.png "Select sheet")
 
 Select "Lesson 1 - Basics" and click "Advance".
 
-![Figure 18: Test](images/documentation/doc_18.png "Test")
+![Figure 18: Test](prosakart/images/documentation/doc_18.png "Test")
 
 Finally, you are able to start memorizing your vocabulary. An entry will be randomly selected and given to you to answer. If you get it correct, a green bar will work its way up on the right-hand side of the screen. If you get it wrong, the bar will flood with red, displaying the correct answer. When this happens, hit the enter key once you have learned the correct answer to proceed with the next entry.
 
@@ -159,7 +159,7 @@ Once an entry is complete, a small yellow star shall appear in the bottom-left c
 
 Finally, you can see how many stars you have in total by going back to the main menu.
 
-![Figure 19: Number of stars](images/documentation/doc_19.png "Number of stars")
+![Figure 19: Number of stars](prosakart/images/documentation/doc_19.png "Number of stars")
 
 After completing the entries from this example, you should have six stars.
 
