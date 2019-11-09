@@ -25,14 +25,14 @@ You will need Python3.6 (or a later version). There are no other packages requir
 
 To install ProSakart on Linux, use the following command:
 ```
-sudo pip3 install git+https://github.com/clockback/prosakart
+$ sudo pip3 install git+https://github.com/clockback/prosakart
 ```
 
 # Documentation
 
 You may launch the application by typing:
 ```
-prosakart
+$ prosakart
 ```
 This will take you to the menu.
 
