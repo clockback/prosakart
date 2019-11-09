@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
@@ -25,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="127.20891"
-     inkscape:cy="944.45548"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="105.08633"
+     inkscape:cy="857.07806"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -67,18 +68,64 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu" /></flowRegion><flowPara
          id="flowPara16"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Nakula;-inkscape-font-specification:Nakula">Pr<flowSpan
-   style="font-size:48.0000006px"
-   id="flowSpan12"> </flowSpan>Sakart</flowPara></flowRoot>    <path
-       sodipodi:type="spiral"
-       style="fill:none;fill-rule:evenodd;stroke:#9d0000;stroke-width:0.63146418;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path18"
-       sodipodi:cx="28.052759"
-       sodipodi:cy="61.876667"
-       sodipodi:expansion="1"
-       sodipodi:revolution="3"
-       sodipodi:radius="3.224503"
-       sodipodi:argument="-19.410719"
-       sodipodi:t0="0"
-       d="m 28.052759,61.876667 c 0.136877,-0.08604 0.183506,0.14206 0.142999,0.227499 -0.109772,0.231533 -0.431098,0.199493 -0.597996,0.0585 -0.298541,-0.252206 -0.234539,-0.715722 0.026,-0.968494 0.382352,-0.370953 1.004555,-0.271587 1.338991,0.1105 0.445752,0.509262 0.309547,1.294927 -0.194999,1.709489 -0.634919,0.521684 -1.586045,0.347988 -2.079986,-0.279499 -0.59823,-0.759972 -0.386713,-1.877585 0.363998,-2.450484 0.884688,-0.675142 2.169388,-0.425614 2.820982,0.448498 0.752291,1.009198 0.464634,2.461366 -0.532998,3.191479 -1.133573,0.829601 -2.753468,0.503736 -3.561977,-0.617497 -0.907023,-1.257855 -0.542898,-3.045661 0.701998,-3.932474 1.382069,-0.984531 3.33792,-0.582106 4.302971,0.786496" />
+   style="font-size:42.66666721px"
+   id="flowSpan12"> </flowSpan>Sakart</flowPara></flowRoot>    <g
+       transform="matrix(0.01097363,0,0,0.01097363,27.575317,61.122904)"
+       id="g103">
+      <path
+         inkscape:connector-curvature="0"
+         id="Cresc"
+         transform="translate(0.5,-0.1)"
+         d="M -10.294,244.024 C -120.274,194.616 -114.952,47.723 -1.21,-0.128 -182.399,-29.113 -187.058,257.58 -10.294,244.024 Z"
+         style="fill:#800000;stroke:#800000;stroke-width:1px;stroke-linejoin:miter" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         xlink:href="#Cresc"
+         transform="rotate(51.42857)"
+         id="use91" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         xlink:href="#Cresc"
+         transform="rotate(102.85714)"
+         id="use93" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         xlink:href="#Cresc"
+         transform="rotate(154.28571)"
+         id="use95" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         xlink:href="#Cresc"
+         transform="rotate(-154.28571)"
+         id="use97" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         xlink:href="#Cresc"
+         transform="rotate(-102.85714)"
+         id="use99" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         xlink:href="#Cresc"
+         transform="rotate(-51.42857)"
+         id="use101" />
+    </g>
   </g>
 </svg>
