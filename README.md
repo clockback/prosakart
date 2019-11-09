@@ -1,3 +1,5 @@
+![](images/logo.png "Logo")
+
 # About
 
 **ProSakart** is a language-learning application, specifically for vocabulary memorization. It is a portmanteau of *Professional* and *Sakartvelo*. Its source code is written in Python.
