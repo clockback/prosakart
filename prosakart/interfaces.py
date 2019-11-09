@@ -14,8 +14,6 @@ from typing import Any, Deque, Tuple, Type, Union
 from . sql_handle import SQLHandler
 from . misc import linspace
 
-from time import time
-
 
 def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
     """
@@ -2290,6 +2288,7 @@ class TestInterface(BaseInterface):
 
         # Remembers what animation iteration the test widget is on.
         self.i: int = 0
+        self.waiting: bool = False
 
         # Refreshes all the entries
         self.handler.refresh_entries()
@@ -2319,16 +2318,13 @@ class TestInterface(BaseInterface):
         self.panel.bind("<Configure>", self.resize_window)
 
         # Places an image at the bottom of the window.
-        self.tick_img: tk.PhotoImage = tk.PhotoImage(file="images/tick.png")
-        self.cross_img: tk.PhotoImage = tk.PhotoImage(file="images/cross.png")
         self.star_img: tk.PhotoImage = tk.PhotoImage(file="images/star.png")
         self.blank_img: tk.PhotoImage = tk.PhotoImage(file="images/blank.png")
 
-        self.canvas: tk.Canvas = tk.Canvas(
-            self.widget.top, width=self.tick_img.width(),
-            height=self.tick_img.height()
+        self.response: tk.Label = tk.Label(
+            self.widget.top, text="", font=("Ubuntu", 20)
         )
-        self.canvas.place(
+        self.response.place(
             anchor=tk.CENTER, relx=0.5, rely=0.5, y=75
         )
 
@@ -2400,8 +2396,10 @@ class TestInterface(BaseInterface):
         if self.i < 500:
             self.e1.after(1, lambda: self.animate_bar(sheet_id, so_far))
             self.refresh_bar(so_far)
-        else:
+        elif so_far >= -self.needed:
             self.e1.after(200, lambda: self.new_entry(sheet_id))
+        else:
+            self.waiting = True
 
     def refresh_bar(self, so_far: Union[int, None] = None) -> None:
         """
@@ -2476,8 +2474,8 @@ class TestInterface(BaseInterface):
                     )
             elif so_far > self.so_far:
                 top = (
-                          lines[0] + 2 if so_far >= 0
-                          else lines[-1 - self.so_far] - 1
+                    lines[0] + 2 if so_far >= 0
+                    else lines[-1 - self.so_far] - 1
                 )
                 self.progress_bar.create_rectangle(
                     0, lines[0] + 2, 20,
@@ -2534,10 +2532,7 @@ class TestInterface(BaseInterface):
                 self.progress_bar.create_rectangle(
                     0, lines[0] + 2, 20,
                     lines[0] + 2 +
-                    (
-                            (lines[-1] - 1)
-                            - (lines[0] + 2)
-                    ) * self.i / 500,
+                    ((lines[-1] - 1) - (lines[0] + 2)) * self.i / 500,
                     fill='red', outline=""
                 )
                 self.progress_bar.create_rectangle(
@@ -2587,8 +2582,14 @@ class TestInterface(BaseInterface):
         Clears the entry made by the user.
         :return: None
         """
+        # Does stuff if necessary
+        if self.i == 500 and self.waiting:
+            self.i = 0
+            self.waiting = False
+            self.new_entry(sheet_id)
+            return
         # Ignores if animating
-        if self.i != 0:
+        elif self.i != 0:
             return
 
         attempt = self.e1.get().strip()
@@ -2604,14 +2605,16 @@ class TestInterface(BaseInterface):
                 match = 1
 
         if match == 0:
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.cross_img)
-            self.reattempt = False
+            show = self.handler.get_entry_question_and_answer(self.entry)[1]
+            self.response.config(text=f"Wrong:\n{show}")
         elif match == 1:
+            self.response.config(text="Check your spelling!")
             self.reattempt = True
             return
         elif match == 2:
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tick_img)
-            self.reattempt = False
+            self.response.config(text="Correct!")
+
+        self.reattempt = False
 
         so_far = self.handler.update_entry(self.entry, match == 2)[2]
         self.draw_stars(so_far)
@@ -2627,7 +2630,7 @@ class TestInterface(BaseInterface):
         :return: None
         """
         self.e1.config(state=tk.NORMAL)
-        self.canvas.delete(tk.ALL)
+        self.response.config(text="")
         self.e1.delete(0, tk.END)
         self.entry, self.question, self.points, self.needed, self.so_far = (
             self.pick_word(sheet_id, self.entry)
@@ -2682,4 +2685,4 @@ class TestInterface(BaseInterface):
         :return: None
         """
         self.panel.destroy()
-        self.canvas.destroy()
+        self.response.destroy()
