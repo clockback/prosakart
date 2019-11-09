@@ -1710,7 +1710,7 @@ class CreateEntryInterface(BaseInterface):
         # Creates the central panel for naming the sheet.
         self.e_panel: tk.PanedWindow = tk.PanedWindow(self.widget.top)
         self.e_panel.pack(expand=1, fill=tk.Y)
-        self.notebook.add(self.e_panel, text="Entries")
+        self.notebook.add(self.e_panel, text="Sheets")
         self.e_sub_panel: tk.PanedWindow = tk.PanedWindow(self.e_panel)
         self.e_sub_panel.place(anchor=tk.CENTER, relx=0.5, rely=0.4)
 
@@ -2016,7 +2016,7 @@ class EditEntryInterfaceNew(BaseInterface):
         # Creates the central panel for naming the sheet.
         self.e_panel: tk.PanedWindow = tk.PanedWindow(self.widget.top)
         self.e_panel.pack(expand=1, fill=tk.Y)
-        self.notebook.add(self.e_panel, text="Entries")
+        self.notebook.add(self.e_panel, text="Sheets")
         self.e_sub_panel: tk.PanedWindow = tk.PanedWindow(self.e_panel)
         self.e_sub_panel.place(anchor=tk.CENTER, relx=0.5, rely=0.4)
 
