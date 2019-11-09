@@ -982,7 +982,8 @@ class SQLHandler:
                 if previous else ""
             }
             CASE WHEN (so_far = 2) THEN 2 WHEN (so_far = 0) THEN 1
-                ELSE 0 END
+                ELSE 0 END,
+            RANDOM()
             LIMIT 1;
             """, (sheet_id, *previous)
         )
@@ -1065,11 +1066,18 @@ class SQLHandler:
             """
         )
 
-        #TODO: remove this
-        self.conn.execute(
-            """
-            UPDATE entries SET points = 0, completed = NULL, so_far = 0,
-                needed = 2
-            WHERE question = "abc";
+    def get_points(self) -> int:
+        """
+        Returns the total number of points.
+        :return: int
+            The number of points held by the user.
+        """
+        self.cur.execute(
+            f"""
+            SELECT (
+                (SELECT SUM(points) FROM entries) +
+                (SELECT COUNT(entry) FROM entries WHERE so_far = 2)
+            ) as total_points;
             """
         )
+        return self.cur.fetchone()[0]

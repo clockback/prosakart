@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import ttk
 
 # typing is needed for the type annotation.
-from typing import Any, Deque, Tuple, Type, Union
+from typing import Any, Callable, Deque, Iterable, Tuple, Type, Union
 
 # Import local files.
 from . sql_handle import SQLHandler
@@ -117,6 +117,22 @@ class BaseInterface:
         if not self.destroyed:
             new_interface(self.widget, self.handler, *args)
 
+    @staticmethod
+    def bind_escape(
+            elements: Iterable[tk.Widget], func: Callable[[], None]
+    ) -> None:
+        """
+        Binds the escape event to the appropriate function for all
+        given elements.
+        :param elements: Iterable[tk.Widget]
+            The list or iterable of widgets to be bound.
+        :param func: Callable[[], None]
+            The function to be bound.
+        :return: None
+        """
+        for element in elements:
+            element.bind("<Escape>", lambda _: func())
+
 
 class MenuInterface(BaseInterface):
     """
@@ -163,6 +179,28 @@ class MenuInterface(BaseInterface):
             font=("Ubuntu", 20)
         )
         self.create_button.pack()
+
+        # Creates a small cluster of stars at the bottom-left of the
+        # screen.
+        self.star_img: tk.PhotoImage = tk.PhotoImage(file="images/star.png")
+
+        self.star_panel: tk.PanedWindow = tk.PanedWindow(
+            self.widget.top, width=200, height=40
+        )
+        self.star_panel.place(anchor=tk.SW, relx=0, rely=1)
+
+        self.stars: tk.Canvas = tk.Canvas(self.star_panel, width=60, height=40)
+        self.stars.place(anchor=tk.NW, relx=0, rely=0)
+        self.stars.create_image(5, 5, anchor=tk.NW, image=self.star_img)
+        self.stars.create_image(15, 5, anchor=tk.NW, image=self.star_img)
+        self.stars.create_image(25, 5, anchor=tk.NW, image=self.star_img)
+
+        points = self.handler.get_points()
+        self.no_stars: tk.Label = tk.Label(
+            self.star_panel, text=points if points else 0,
+            font=("Ubuntu", 20)
+        )
+        self.no_stars.place(anchor=tk.NW, relx=0, rely=0, x=65)
 
     def destroy(self) -> None:
         """
@@ -224,6 +262,13 @@ class EditInterface(BaseInterface):
             command=lambda: self.go_to(MenuInterface), width=10
         )
         self.back_button.place(relx=0.01, rely=0.99, anchor=tk.SW)
+
+        self.bind_escape(
+            (
+                self.edit_languages_button, self.edit_sheets_button,
+                self.edit_entries_button, self.back_button,
+            ), lambda: self.go_to(MenuInterface)
+        )
 
     def destroy(self) -> None:
         """
@@ -317,6 +362,15 @@ class EditLanguagesInterface(BaseInterface):
         )
         self.back_button.place(relx=0.01, rely=0.99, anchor=tk.SW)
 
+        self.bind_escape(
+            (
+                self.language_list, self.new_language_button,
+                self.edit_language_button, self.delete_language_button,
+                self.back_button
+            ),
+            lambda: self.go_to(EditInterface)
+        )
+
     def delete_language(self) -> None:
         """
         Prompts the user to check if they wish to delete the language.
@@ -397,6 +451,11 @@ class CreateLanguageInterface(BaseInterface):
             command=self.save_language, font=("Ubuntu", 20), state=tk.DISABLED
         )
         self.save_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
+
+        self.bind_escape(
+            (self.entry, self.back_button, self.save_button),
+            lambda: self.go_to(EditLanguagesInterface)
+        )
 
     def save_language(self):
         """
@@ -494,6 +553,11 @@ class EditLanguageInterface(BaseInterface):
         )
         self.save_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
 
+        self.bind_escape(
+            (self.entry, self.back_button, self.save_button),
+            lambda: self.go_to(EditLanguagesInterface)
+        )
+
     def save_language(self):
         """
         Saves the language to the database and returns to the menu.
@@ -584,6 +648,11 @@ class DeleteLanguageInterface(BaseInterface):
         )
         self.delete_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
 
+        self.bind_escape(
+            (self.back_button, self.delete_button),
+            lambda: self.go_to(EditLanguagesInterface)
+        )
+
     def delete_language(self):
         """
         Saves the language to the database and returns to the menu.
@@ -609,6 +678,7 @@ class EditSheetsInterface(BaseInterface):
     """
     def __init__(
             self, main_widget: MainWidget, handler: SQLHandler
+
     ) -> None:
         """
         Creates the sheets-editing interface.
@@ -677,6 +747,14 @@ class EditSheetsInterface(BaseInterface):
         )
         self.advance_button.config(state=tk.DISABLED)
         self.advance_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
+
+        self.bind_escape(
+            (
+                self.listbox_1, self.listbox_2, self.back_button,
+                self.advance_button
+            ),
+            lambda: self.go_to(EditInterface)
+        )
 
     def check_both_clicked(self, _) -> None:
         """
@@ -789,6 +867,14 @@ class EditTranslatorSheetsInterface(BaseInterface):
             command=lambda: self.go_to(EditSheetsInterface)
         )
         self.back_button.place(relx=0.01, rely=0.99, anchor=tk.SW)
+
+        self.bind_escape(
+            (
+                self.sheet_list, self.new_sheet_button, self.edit_sheet_button,
+                self.delete_sheet_button, self.back_button
+            ),
+            lambda: self.go_to(EditSheetsInterface)
+        )
 
     def delete_sheet(self, from_l: str, to_l: str) -> None:
         """
@@ -920,6 +1006,14 @@ class CreateSheetInterface(BaseInterface):
         )
         self.save_button.config(state=tk.DISABLED)
         self.save_button.place(relx=0.99, rely=0.99, anchor=tk.SE)
+
+        self.bind_escape(
+            (
+                self.notebook, self.entry, self.search, self.entries,
+                self.back_button, self.save_button
+            ),
+            lambda: self.go_to(EditTranslatorSheetsInterface, from_l, to_l)
+        )
 
     def add_entry(self, _: tk.EventType):
         """
@@ -1111,6 +1205,14 @@ class EditSheetInterface(BaseInterface):
         )
         self.save_button.place(relx=0.99, rely=0.99, anchor=tk.SE)
 
+        self.bind_escape(
+            (
+                self.notebook, self.entry, self.search, self.entries,
+                self.back_button, self.save_button
+            ),
+            lambda: self.go_to(EditTranslatorSheetsInterface, from_l, to_l)
+        )
+
     def check_sheet(self, from_l: str, to_l: str) -> bool:
         """
         Checks if the sheet in the entry is valid for creation.
@@ -1268,6 +1370,13 @@ class EditEntriesInterface(BaseInterface):
         self.advance_button.config(state=tk.DISABLED)
         self.advance_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
 
+        self.bind_escape(
+            (
+                self.listbox_1, self.listbox_2, self.back_button,
+                self.advance_button,
+            ), lambda: self.go_to(EditInterface)
+        )
+
     def check_both_clicked(self, _) -> None:
         """
         Activates the advance button if appropriate.
@@ -1386,6 +1495,13 @@ class EditTranslatorEntriesInterface(BaseInterface):
             command=lambda: self.go_to(EditEntriesInterface)
         )
         self.back_button.place(relx=0.01, rely=0.99, anchor=tk.SW)
+
+        self.bind_escape(
+            (
+                self.entries, self.create_entry_button, self.edit_entry_button,
+                self.delete_entry_button, self.back_button
+            ), lambda: self.go_to(EditEntriesInterface)
+        )
 
     def delete_entry(self, from_l: str, to_l: str) -> None:
         """
@@ -1628,6 +1744,14 @@ class CreateEntryInterface(BaseInterface):
             state=tk.DISABLED, command=lambda: self.save_entry(from_l, to_l)
         )
         self.save_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
+
+        self.bind_escape(
+            (
+                self.notebook, self.question, self.answer, self.answer_entry,
+                self.answers, self.add_button, self.delete_button, self.sheets,
+                self.back_button, self.save_button
+            ), lambda: self.go_to(EditTranslatorEntriesInterface, from_l, to_l)
+        )
 
     def lose_focus_on_answer(self) -> None:
         """
@@ -1933,6 +2057,14 @@ class EditEntryInterfaceNew(BaseInterface):
         self.question_sv.set(question)
         self.answer_sv.set(answer)
 
+        self.bind_escape(
+            (
+                self.notebook, self.question, self.answer, self.answer_entry,
+                self.answers, self.add_button, self.delete_button, self.sheets,
+                self.back_button, self.save_button
+            ), lambda: self.go_to(EditTranslatorEntriesInterface, from_l, to_l)
+        )
+
     def lose_focus_on_answer(self) -> None:
         """
         Updates the corresponding list of answers.
@@ -2133,6 +2265,14 @@ class TranslatorInterface(BaseInterface):
         self.advance_button.config(state=tk.DISABLED)
         self.advance_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
 
+        self.bind_escape(
+            (
+                self.listbox_1, self.listbox_2, self.back_button,
+                self.advance_button
+            ),
+            lambda: self.go_to(MenuInterface)
+        )
+
     def check_both_clicked(self, _) -> None:
         """
         Activates the advance button if appropriate.
@@ -2244,6 +2384,11 @@ class PickSheetInterface(BaseInterface):
         )
         self.advance_button.config(state=tk.DISABLED)
         self.advance_button.place(anchor=tk.SE, relx=0.99, rely=0.99)
+
+        self.bind_escape(
+            (self.listbox, self.back_button, self.advance_button),
+            lambda: self.go_to(TranslatorInterface)
+        )
 
     def select_sheet(self, from_l: str, to_l: str) -> None:
         """
