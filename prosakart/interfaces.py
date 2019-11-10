@@ -2400,7 +2400,9 @@ class PickSheetInterface(BaseInterface):
         Allows the user to advance.
         :return: None
         """
-        if self.handler.get_entries_from_sheet(
+        selection = self.listbox.curselection()
+
+        if selection and self.handler.get_entries_from_sheet(
             self.listbox.get(self.listbox.curselection()), from_l, to_l
 
         ):
