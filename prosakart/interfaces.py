@@ -4,8 +4,6 @@ from collections import deque
 from difflib import SequenceMatcher
 from os import path
 
-import os; help(os)
-
 # tkinter is needed for the GUI interface.
 import tkinter as tk
 from tkinter import ttk
