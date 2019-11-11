@@ -178,15 +178,7 @@ class MenuInterface(BaseInterface):
             command=lambda: self.go_to(TranslatorInterface), width=10,
             font=("Ubuntu", 20)
         )
-
-        if test:
-            input("Button stage 2!")
-
-        # self.test_button.focus()
-
-        if test:
-            input("Button stage 3!")
-
+        self.test_button.focus()
         self.test_button.pack()
 
         separate(self.panel)
