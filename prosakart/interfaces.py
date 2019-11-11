@@ -169,9 +169,6 @@ class MenuInterface(BaseInterface):
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.img)
         self.canvas.place(anchor=tk.CENTER, relx=0.5, rely=0.2)
 
-        if test:
-            input("Make a button!")
-
         # Adding test button.
         self.test_button: tk.Button = tk.Button(
             self.panel, text="Test",
@@ -182,15 +179,12 @@ class MenuInterface(BaseInterface):
         if test:
             input("Focus on the button!")
 
-        self.test_button.focus()
+        # self.test_button.focus()
 
         if test:
             input("Pack the button in!")
 
         self.test_button.pack()
-
-        if test:
-            input("How about another button now?")
 
         separate(self.panel)
 
