@@ -163,16 +163,26 @@ class MenuInterface(BaseInterface):
         self.panel: tk.PanedWindow = tk.PanedWindow(self.widget.top)
         self.panel.place(anchor=tk.CENTER, relx=0.5, rely=0.5)
 
+        if test:
+            input("Get me my image!")
+
         # Places an image at the bottom of the window.
         self.img = tk.PhotoImage(file=path.join(
             path.dirname(path.realpath(__file__)), "images", "logo.png"
         ))
+
+        if test:
+            input("Put the image in!")
+
         self.canvas = tk.Canvas(
             self.widget.top, width=self.img.width(),
             height=self.img.height()
         )
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.img)
         self.canvas.place(anchor=tk.CENTER, relx=0.5, rely=0.2)
+
+        if test:
+            print("Ç'est magnifique!")
 
         # Adding test button.
         self.test_button: tk.Button = tk.Button(
@@ -210,7 +220,8 @@ class MenuInterface(BaseInterface):
         self.stars.create_image(15, 5, anchor=tk.NW, image=self.star_img)
         self.stars.create_image(25, 5, anchor=tk.NW, image=self.star_img)
 
-        input("How many stars are there?")
+        if test:
+            input("How many stars are there?")
 
         points = self.handler.get_points()
         self.no_stars: tk.Label = tk.Label(
@@ -219,7 +230,8 @@ class MenuInterface(BaseInterface):
         )
         self.no_stars.place(anchor=tk.NW, relx=0, rely=0, x=65)
 
-        input("Menu interface looking good!")
+        if test:
+            input("Menu interface looking good!")
 
     def destroy(self) -> None:
         """
