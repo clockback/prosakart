@@ -65,6 +65,10 @@ class MainWidget:
         """
         # Creates the window.
         self.top: tk.Tk = tk.Tk()
+        icon = tk.PhotoImage(file=path.join(
+            path.dirname(path.realpath(__file__)), "images", "logo.png"
+        ))
+        self.top.wm_iconphoto(True, icon)
         self.top.title('ProSakart')
         self.top.geometry("500x400")
         self.top.update()
