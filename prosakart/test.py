@@ -13,6 +13,7 @@ def main():
         path.mkdir(parents=True, exist_ok=True)
     db_file = str(Path(path, "vocab.db"))
     input("Database created!")
+    input("And then...")
     top = tk.Tk()
     top.mainloop()
     input("Window made!")
