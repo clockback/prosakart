@@ -7,7 +7,6 @@ def main():
     button = tk.Button(
             panel, text="Test",
             command=lambda: print("Hello"), width=10,
-            font=("Ubuntu", 20)
         )
     input("Focus the button.")
     button.focus()
