@@ -480,6 +480,7 @@ class CreateLanguageInterface(BaseInterface):
         Checks if the language in the entry is valid for creation.
         :return: None
         """
+        print(_)
         name = self.string_var.get().strip()
         already_exists = bool(self.handler.get_language(name, r_none=True))
         correct_length = 1 <= len(name) <= 40
