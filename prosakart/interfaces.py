@@ -182,7 +182,7 @@ class MenuInterface(BaseInterface):
         self.canvas.place(anchor=tk.CENTER, relx=0.5, rely=0.2)
 
         if test:
-            print("Ç'est magnifique!")
+            print("Looking beautiful!")
 
         # Adding test button.
         self.test_button: tk.Button = tk.Button(
@@ -193,6 +193,9 @@ class MenuInterface(BaseInterface):
         self.test_button.focus()
         self.test_button.pack()
 
+        if test:
+            input("How about another button now?")
+
         separate(self.panel)
 
         # Adding create button.
@@ -202,6 +205,9 @@ class MenuInterface(BaseInterface):
             font=("Ubuntu", 20)
         )
         self.create_button.pack()
+
+        if test:
+            input("Stars would be nice")
 
         # Creates a small cluster of stars at the bottom-left of the
         # screen.
