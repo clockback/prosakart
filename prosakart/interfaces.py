@@ -210,12 +210,16 @@ class MenuInterface(BaseInterface):
         self.stars.create_image(15, 5, anchor=tk.NW, image=self.star_img)
         self.stars.create_image(25, 5, anchor=tk.NW, image=self.star_img)
 
+        input("How many stars are there?")
+
         points = self.handler.get_points()
         self.no_stars: tk.Label = tk.Label(
             self.star_panel, text=points if points else 0,
             font=("Ubuntu", 20)
         )
         self.no_stars.place(anchor=tk.NW, relx=0, rely=0, x=65)
+
+        input("Menu interface looking good!")
 
     def destroy(self) -> None:
         """
