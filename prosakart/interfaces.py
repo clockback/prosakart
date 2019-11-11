@@ -16,10 +16,6 @@ from . sql_handle import SQLHandler
 from . misc import linspace
 
 
-# TODO: remove
-test: bool = True
-
-
 def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
     """
     Creates the gap.
@@ -168,9 +164,6 @@ class MenuInterface(BaseInterface):
         )
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.img)
         self.canvas.place(anchor=tk.CENTER, relx=0.5, rely=0.2)
-
-        if test:
-            input("Button stage 1!")
 
         # Adding test button.
         self.test_button: tk.Button = tk.Button(
