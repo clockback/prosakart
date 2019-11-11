@@ -1,7 +1,6 @@
 def main():
     import tkinter as tk
     top = tk.Tk()
-    top.mainloop()
     panel: tk.PanedWindow = tk.PanedWindow(top)
     panel.place(anchor=tk.CENTER, relx=0.5, rely=0.5)
     input("Make the button.")
@@ -15,3 +14,4 @@ def main():
     input("Pack the button.")
     button.pack()
     input("All done!")
+    top.mainloop()
