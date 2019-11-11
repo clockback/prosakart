@@ -16,6 +16,10 @@ from . sql_handle import SQLHandler
 from . misc import linspace
 
 
+# TODO: remove
+test: bool = True
+
+
 def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
     """
     Creates the gap.
@@ -70,6 +74,9 @@ class MainWidget:
         self.top.update()
         self.top.minsize(self.top.winfo_width(), self.top.winfo_height())
         self.interface: Union[BaseInterface, None] = None
+
+        if test:
+            input("Created application widget.")
 
         # Generates the main menu interface.
         MenuInterface(self, handler)
@@ -148,6 +155,9 @@ class MenuInterface(BaseInterface):
         """
         # Initializes the general aspects of the interface.
         super().__init__(main_widget, handler)
+
+        if test:
+            input("Begin to layout the menu interface.")
 
         # Creates the central panel.
         self.panel: tk.PanedWindow = tk.PanedWindow(self.widget.top)
