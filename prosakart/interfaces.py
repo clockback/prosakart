@@ -75,9 +75,6 @@ class MainWidget:
         self.top.minsize(self.top.winfo_width(), self.top.winfo_height())
         self.interface: Union[BaseInterface, None] = None
 
-        if test:
-            input("Created application widget.")
-
         # Generates the main menu interface.
         MenuInterface(self, handler)
 
@@ -156,23 +153,14 @@ class MenuInterface(BaseInterface):
         # Initializes the general aspects of the interface.
         super().__init__(main_widget, handler)
 
-        if test:
-            input("Begin to layout the menu interface.")
-
         # Creates the central panel.
         self.panel: tk.PanedWindow = tk.PanedWindow(self.widget.top)
         self.panel.place(anchor=tk.CENTER, relx=0.5, rely=0.5)
-
-        if test:
-            input("Get me my image!")
 
         # Places an image at the bottom of the window.
         self.img = tk.PhotoImage(file=path.join(
             path.dirname(path.realpath(__file__)), "images", "logo.png"
         ))
-
-        if test:
-            input("Put the image in!")
 
         self.canvas = tk.Canvas(
             self.widget.top, width=self.img.width(),
@@ -182,7 +170,7 @@ class MenuInterface(BaseInterface):
         self.canvas.place(anchor=tk.CENTER, relx=0.5, rely=0.2)
 
         if test:
-            print("Looking beautiful!")
+            input("Make a button!")
 
         # Adding test button.
         self.test_button: tk.Button = tk.Button(
@@ -190,7 +178,15 @@ class MenuInterface(BaseInterface):
             command=lambda: self.go_to(TranslatorInterface), width=10,
             font=("Ubuntu", 20)
         )
+
+        if test:
+            input("Focus on the button!")
+
         self.test_button.focus()
+
+        if test:
+            input("Pack the button in!")
+
         self.test_button.pack()
 
         if test:
@@ -205,9 +201,6 @@ class MenuInterface(BaseInterface):
             font=("Ubuntu", 20)
         )
         self.create_button.pack()
-
-        if test:
-            input("Stars would be nice")
 
         # Creates a small cluster of stars at the bottom-left of the
         # screen.
@@ -226,18 +219,12 @@ class MenuInterface(BaseInterface):
         self.stars.create_image(15, 5, anchor=tk.NW, image=self.star_img)
         self.stars.create_image(25, 5, anchor=tk.NW, image=self.star_img)
 
-        if test:
-            input("How many stars are there?")
-
         points = self.handler.get_points()
         self.no_stars: tk.Label = tk.Label(
             self.star_panel, text=points if points else 0,
             font=("Ubuntu", 20)
         )
         self.no_stars.place(anchor=tk.NW, relx=0, rely=0, x=65)
-
-        if test:
-            input("Menu interface looking good!")
 
     def destroy(self) -> None:
         """
