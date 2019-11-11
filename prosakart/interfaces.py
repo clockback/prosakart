@@ -4,8 +4,6 @@ from collections import deque
 from difflib import SequenceMatcher
 from os import path
 
-import os; help(os)
-
 # tkinter is needed for the GUI interface.
 import tkinter as tk
 from tkinter import ttk
@@ -2402,7 +2400,9 @@ class PickSheetInterface(BaseInterface):
         Allows the user to advance.
         :return: None
         """
-        if self.handler.get_entries_from_sheet(
+        selection = self.listbox.curselection()
+
+        if selection and self.handler.get_entries_from_sheet(
             self.listbox.get(self.listbox.curselection()), from_l, to_l
 
         ):
