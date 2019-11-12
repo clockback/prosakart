@@ -448,10 +448,6 @@ class CreateLanguageInterface(BaseInterface):
         self.entry.focus()
         self.entry.pack()
 
-        txt = tk.Text(self.panel)
-        txt.pack()
-        txt.insert(tk.END, "abcdefghijklmnopqrstuvwxyz")
-
         # Creates the language name entry.
         self.back_button: tk.Button = tk.Button(
             self.widget.top, text="Back", width=10, font=("Ubuntu", 20),
