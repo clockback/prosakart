@@ -11,10 +11,7 @@ from . interfaces import MainWidget
 __version__ = '0.1.0.0'
 
 # Runs the application.
-# handler: SQLHandler = SQLHandler()
-# widget: MainWidget = MainWidget(handler)
-# widget.top.mainloop()
-# handler.close()
-
-from idlelib.pyshell import main
-main()
+handler: SQLHandler = SQLHandler()
+widget: MainWidget = MainWidget(handler)
+widget.top.mainloop()
+handler.close()
