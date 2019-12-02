@@ -1508,8 +1508,9 @@ class EditTranslatorEntriesInterface(BaseInterface):
 
         self.bind_escape(
             (
-                self.entries, self.create_entry_button, self.edit_entry_button,
-                self.delete_entry_button, self.back_button
+                self.search, self.entries, self.create_entry_button,
+                self.edit_entry_button, self.delete_entry_button,
+                self.back_button
             ), lambda: self.go_to(EditEntriesInterface)
         )
 
@@ -2367,6 +2368,8 @@ class PickSheetInterface(BaseInterface):
         )
         for sheet in self.handler.get_all_sheets(from_l, to_l, sort=True):
             self.listbox.insert(tk.END, sheet)
+            if self.handler.get_sheet_complete(from_l, to_l, sheet):
+                self.listbox.itemconfig(tk.END, fg="green")
         self.listbox.bind("<<ListboxSelect>>", lambda _: self.select_sheet(
             from_l, to_l
         ))

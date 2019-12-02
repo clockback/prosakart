@@ -490,6 +490,38 @@ class SQLHandler:
                 )
         return row[0]
 
+    def get_sheet_complete(self, from_l: str, to_l: str, sheet: str) -> bool:
+        """
+        Finds whether or not a sheet has been completed (cannot receive
+        any more stars at the present moment).
+        :param str from_l: The name of the language being translated
+            from.
+        :param str to_l: The name of the language being translated to.
+        :param str sheet: The sheet's name.
+        :rtype: bool
+        :return: Whether it is complete or not.
+        """
+        self.cur.execute(
+            f"""
+            SELECT COUNT(so_far) FROM SHEETS
+            INNER JOIN translators
+                ON translators.translator = sheets.translator
+            INNER JOIN languages AS l1
+                ON translators.from_l = l1.language
+            INNER JOIN languages AS l2
+                ON translators.to_l = l2.language
+            INNER JOIN entries
+            INNER JOIN mentions
+                ON mentions.entry = entries.entry
+                AND sheets.sheet = mentions.sheet
+            WHERE l1.name = ?
+                AND l2.name = ?
+                AND sheets.name = ?
+                AND entries.so_far != 2;
+            """, (from_l, to_l, sheet)
+        )
+        return not bool(self.cur.fetchone()[0])
+
     def get_sheets(
             self, names: List[str], from_l: str, to_l: str
     ) -> Iterable[int]:
