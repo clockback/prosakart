@@ -1595,14 +1595,12 @@ class CreateEntryInterface(BaseInterface):
     ) -> None:
         """
         Creates the entry-creation interface.
-        :param main_widget: MainWidget
-            The widget on which to create the sheet-creation interface.
-        :param handler: SQLHandler
-            The handler for the SQLite database.
-        :param from_l: str
-            The name of the language being translated.
-        :param to_l: str
-            The name of the language to which it is being translated.
+        :param MainWidget main_widget: The widget on which to create the
+            sheet-creation interface.
+        :param SQLHandler handler: The handler for the SQLite database.
+        :param str from_l: The name of the language being translated.
+        :param str to_l: The name of the language to which it is being
+            translated.
         :return: None
         """
         # Initializes the general aspects of the interface.
