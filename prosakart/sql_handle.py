@@ -937,8 +937,9 @@ class SQLHandler:
                 SELECT DISTINCT sheet FROM sheets
                 INNER JOIN entries
                     ON entries.translator = sheets.translator
-                WHERE {" OR ".join(["name = ?"] * len(to_add))};
-                """, tuple(to_add)
+                WHERE entries.entry = ?
+                    AND {" OR ".join(["name = ?"] * len(to_add))};
+                """, (entry, *to_add)
             )
             to_add_ids = [x[0] for x in self.cur.fetchall()]
             self.conn.execute(
@@ -968,14 +969,11 @@ class SQLHandler:
             )
 
     def delete_entry(self, question: str, from_l: str, to_l: str) -> None:
-        """
-        Deletes the entry of interest.
-        :param question: str
-            The text in the question.
-        :param from_l: str
-            The name of the language being translated from.
-        :param to_l: str
-            The name of the language being translated to.
+        """Deletes the entry of interest.
+        :param str question: The text in the question.
+        :param str from_l: The name of the language being translated
+            from.
+        :param str to_l:The name of the language being translated to.
         :return: None
         """
         entry_no = self.get_entry(question, from_l, to_l)
@@ -988,14 +986,13 @@ class SQLHandler:
     def get_next_entry(
             self, sheet_id: int, previous: Deque[int]
     ) -> Tuple[int, str, int, int, int]:
-        """
-        Finds the next entry for the user to do.
-        :param sheet_id: int
+        """Finds the next entry for the user to do.
+        :param int sheet_id:
             The id of the current sheet.
-        :param previous: Deque[int]
+        :param Deque[int] previous:
             The previously performed questions.
-        :return: str
-            The entry id to be taken next.
+        :rtype: Tuple[int, str, int, int, int]
+        :return: The entry id to be taken next.
         """
         # Order by the following
         self.cur.execute(

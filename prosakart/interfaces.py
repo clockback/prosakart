@@ -2428,15 +2428,12 @@ class PickSheetInterface(BaseInterface):
 
 
 class TestInterface(BaseInterface):
-    """
-    This is the test interface.
-    """
+    """This is the test interface."""
     def __init__(
             self, main_widget: MainWidget, handler: SQLHandler, sheet_id: int
     ) -> None:
-        """
-        Creates the test interface.
-        :param main_widget: MainWidget
+        """Creates the test interface.
+        :param MainWidget main_widget:
             The widget on which to create the test interface.
         :return: None
         """
