@@ -8,7 +8,7 @@ Tests Georgian vocabulary.
 from . sql_handle import SQLHandler
 from . interfaces import MainWidget
 
-__version__ = '0.1.0.1'
+__version__ = '0.1.0.2'
 
 # Runs the application.
 handler: SQLHandler = SQLHandler()

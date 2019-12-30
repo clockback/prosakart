@@ -9,19 +9,19 @@ import tkinter as tk
 from tkinter import ttk
 
 # typing is needed for the type annotation.
-from typing import Any, Callable, Deque, Iterable, Tuple, Type, Union
+from typing import Any, Callable, Deque, Iterable, Optional, Tuple, Type
 
 # Import local files.
 from . sql_handle import SQLHandler
 from . misc import linspace
 
 
-def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
+def separate(panel: tk.PanedWindow, row: Optional[int] = None) -> None:
     """
     Creates the gap.
     :param panel: tk.PanedWindow
         The panel onto which the gap must be placed.
-    :param row: Union[None, int]
+    :param row: Optional[int]
         The row number on which to place the separator.
     :return: None
     """
@@ -34,7 +34,7 @@ def separate(panel: tk.PanedWindow, row: Union[None, int] = None) -> None:
 
 
 def h_separate(
-        panel: tk.PanedWindow, col: int, row: Union[None, int] = None
+        panel: tk.PanedWindow, col: int, row: Optional[int] = None
 ) -> None:
     """
     Creates the horizontal gap.
@@ -42,7 +42,7 @@ def h_separate(
         The panel onto which the gap must be placed.
     :param col: int
         The column number on which to place the separator.
-    :param row: Union[None, int]
+    :param row: Optional[int]
         The row number on which to place the separator.
     :return: None
     """
@@ -73,7 +73,7 @@ class MainWidget:
         self.top.geometry("500x400")
         self.top.update()
         self.top.minsize(self.top.winfo_width(), self.top.winfo_height())
-        self.interface: Union[BaseInterface, None] = None
+        self.interface: Optional[BaseInterface] = None
 
         # Generates the main menu interface.
         MenuInterface(self, handler)
@@ -1732,7 +1732,7 @@ class CreateEntryInterface(BaseInterface):
         # Creates the sheets list
         self.sheets: tk.Listbox = tk.Listbox(
             self.e_sub_panel, selectmode=tk.MULTIPLE, width=25, height=8,
-            font=("Ubuntu", 20)
+            exportselection=False, font=("Ubuntu", 20)
         )
         for sheet in self.handler.get_all_sheets(from_l, to_l):
             self.sheets.insert(tk.END, sheet)
@@ -2038,7 +2038,7 @@ class EditEntryInterfaceNew(BaseInterface):
         # Creates the sheets list
         self.sheets: tk.Listbox = tk.Listbox(
             self.e_sub_panel, selectmode=tk.MULTIPLE, width=25, height=8,
-            font=("Ubuntu", 20)
+            exportselection=False, font=("Ubuntu", 20)
         )
         current_sheets = list(self.handler.get_entry_sheets(entry))
         for sheet in self.handler.get_all_sheets(from_l, to_l):
@@ -2563,7 +2563,7 @@ class TestInterface(BaseInterface):
         else:
             self.waiting = True
 
-    def refresh_bar(self, so_far: Union[int, None] = None) -> None:
+    def refresh_bar(self, so_far: Optional[int] = None) -> None:
         """
         Updates the progress bar.
         :return: None
@@ -2805,10 +2805,10 @@ class TestInterface(BaseInterface):
 
         self.draw_stars()
 
-    def draw_stars(self, so_far: Union[int, None] = None) -> None:
+    def draw_stars(self, so_far: Optional[int] = None) -> None:
         """
         Draws the stars in the bottom-right of the screen.
-        :param so_far: Union[int, None]
+        :param so_far: Optional[int]
             The updated so_far value.
         :return: None
         """
@@ -2823,13 +2823,13 @@ class TestInterface(BaseInterface):
             )
 
     def pick_word(
-            self, sheet_id: int, current: Union[int, None] = None
+            self, sheet_id: int, current: Optional[int] = None
     ) -> Tuple[int, str, int, int, int]:
         """
         Picks a word to do next.
         :param sheet_id: int
             The sheet being used.
-        :param current: Union[str, None]
+        :param current: Optional[str]
             If given, current represents the word that was last tested.
         :return: str
             The new word to choose.
