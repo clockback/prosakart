@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# This launcher sets the Debian-specific multiarch triplet as the
+# X_DEBIAN_MULTIARCH_TRIPLET environmental variable for other launchers'
+# ease
+# 林博仁(Buo-ren, Lin) © 2019
+
+set \
+    -o errexit \
+    -o errtrace \
+    -o nounset \
+    -o pipefail
+
+if ! test -v SNAP_ARCH; then
+    printf -- \
+        '%s: Error: This launcher requires SNAP_ARCH environmental variable to be set and exported.\n' \
+        "$(basename "${BASH_SOURCE[0]}")"
+    exit 1
+fi
+
+declare \
+    X_DEBIAN_MULTIARCH_TRIPLET
+
+# Refer:
+#
+# * Environmental variables - doc - snapcraft.io
+#   https://forum.snapcraft.io/t/environmental-variables/7983
+# * Multiarch/Tuples - Debian Wiki
+#   https://wiki.debian.org/Multiarch/Tuples
+#   NOTE: Only consider Linux archs with the `released` status in Debian for now
+case "${SNAP_ARCH}" in
+    # These are the special cases
+    amd64)
+        X_DEBIAN_MULTIARCH_TRIPLET=x86_64-linux-gnu
+    ;;
+    armel)
+        X_DEBIAN_MULTIARCH_TRIPLET=arm-linux-gnueabi
+    ;;
+    armhf)
+        X_DEBIAN_MULTIARCH_TRIPLET=arm-linux-gnueabihf
+    ;;
+    arm64)
+        X_DEBIAN_MULTIARCH_TRIPLET=aarch64-linux-gnu
+    ;;
+    ppc64el)
+        X_DEBIAN_MULTIARCH_TRIPLET=powerpc64le-linux-gnu
+    ;;
+    # Consider rest of them not exceptions
+    s390x \
+    |*)
+        X_DEBIAN_MULTIARCH_TRIPLET="${SNAP_ARCH}"-linux-gnu
+    ;;
+esac
+
+export \
+    X_DEBIAN_MULTIARCH_TRIPLET
+
+# Finally run the launching command
+exec "${@}"
+

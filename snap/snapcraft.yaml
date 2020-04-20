@@ -1,0 +1,72 @@
+name: prosakart
+base: core18
+version: '0.1.0'
+icon: icon.png
+summary: Application for language memorization.
+description: |
+  ProSakart is a language-learning application, specifically for vocabulary
+  memorization. It is a portmanteau of Professional and Sakartvelo. Its source
+  code is written in Python.
+
+grade: devel
+confinement: devmode
+
+apps:
+  prosakart:
+    adapter: full
+    command: bin/prosakart
+    command-chain:
+      - bin/debian-multiarch-triplet-provider-launch
+      - bin/tcltk-launch
+    plugs:
+
+      - cups-control
+      - desktop
+      - desktop-legacy
+      - gsettings
+      - home
+      - network
+      - opengl
+      - removable-media
+      - unity7
+      - wayland
+      - x11
+
+parts:
+
+  debian-multiarch-triplet-provider-launch:
+    plugin: nil
+    stage-snaps:
+    - debian-multiarch-triplet-provider-launch
+
+  tcltk-launch:
+      plugin: nil
+      stage-snaps:
+        - tcltk-launch
+
+  prosakart:
+    plugin: python
+    python-version: python3
+    source: https://github.com/clockback/prosakart.git
+    source-branch: test
+    build-packages: []
+    stage-packages:
+      - python3-tk
+      - python3-pil.imagetk
+      - fontconfig-config
+      - fonts-dejavu-core
+      - fonts-dejavu-extra
+      - locales-all
+    python-packages: []
+    after:
+      - desktop-glib-only
+
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin
+
