@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Prosakart
+Exec=prosakart
+Icon=${SNAP}/meta/gui/prosakart.png
+Type=Application
