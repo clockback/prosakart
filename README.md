@@ -4,9 +4,11 @@
 
 **ProSakart** is a language-learning application, specifically for vocabulary memorization. It is a portmanteau of *Professional* and *Sakartvelo*. Its source code is written in Python.
 
+This application is no longer under active development, and is currently being replaced with a web-application equivalent, which can be found  [here](https://github.com/clockback/prokart).
+
 ## License
 
-Copyright © 2019  Elliot Paton-Simpson
+Copyright © 2021  Elliot Paton-Simpson
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
